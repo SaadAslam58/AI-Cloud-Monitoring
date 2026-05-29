@@ -1,0 +1,110 @@
+[
+  {
+    "id": "log_001",
+    "timestamp": "2026-05-12T10:00:00Z",
+    "agent_id": "Patrol-Bot-1",
+    "action": "Read_Health",
+    "resource": "Server_01",
+    "assigned_scope": ["Read_Health"],
+    "metadata": { "ip": "10.0.0.10", "session_id": "sess_001" }
+  },
+  {
+    "id": "log_002",
+    "timestamp": "2026-05-12T10:00:02Z",
+    "agent_id": "Patrol-Bot-1",
+    "action": "Read_Health",
+    "resource": "Server_02",
+    "assigned_scope": ["Read_Health"],
+    "metadata": { "ip": "10.0.0.10", "session_id": "sess_001" }
+  },
+  {
+    "id": "log_003",
+    "timestamp": "2026-05-12T10:00:04Z",
+    "agent_id": "Maint-Bot-2",
+    "action": "Write_Health",
+    "resource": "Server_01",
+    "assigned_scope": ["Read_Health", "Write_Health"],
+    "metadata": { "ip": "10.0.0.20", "session_id": "sess_002" }
+  },
+  {
+    "id": "log_004",
+    "timestamp": "2026-05-12T10:00:06Z",
+    "agent_id": "Maint-Bot-3",
+    "action": "Create_Admin_Key",
+    "resource": "IAM_Root",
+    "assigned_scope": ["Read_Health", "Write_Health"],
+    "metadata": { "ip": "10.0.0.42", "session_id": "sess_003" }
+  },
+  {
+    "id": "log_005",
+    "timestamp": "2026-05-12T10:00:08Z",
+    "agent_id": "Patrol-Bot-1",
+    "action": "Read_Health",
+    "resource": "Server_03",
+    "assigned_scope": ["Read_Health"],
+    "metadata": { "ip": "10.0.0.10", "session_id": "sess_001" }
+  },
+  {
+    "id": "log_006",
+    "timestamp": "2026-05-12T10:00:10Z",
+    "agent_id": "Deploy-Bot-4",
+    "action": "Read_Config",
+    "resource": "Config_Store",
+    "assigned_scope": ["Read_Config", "Write_Config"],
+    "metadata": { "ip": "10.0.0.30", "session_id": "sess_004" }
+  },
+  {
+    "id": "log_007",
+    "timestamp": "2026-05-12T10:00:12Z",
+    "agent_id": "Maint-Bot-3",
+    "action": "Delete_Audit_Log",
+    "resource": "AuditTrail_Master",
+    "assigned_scope": ["Read_Health", "Write_Health"],
+    "metadata": { "ip": "10.0.0.42", "session_id": "sess_003" }
+  },
+  {
+    "id": "log_008",
+    "timestamp": "2026-05-12T10:00:14Z",
+    "agent_id": "Patrol-Bot-1",
+    "action": "Read_Health",
+    "resource": "Server_04",
+    "assigned_scope": ["Read_Health"],
+    "metadata": { "ip": "10.0.0.10", "session_id": "sess_001" }
+  },
+  {
+    "id": "log_009",
+    "timestamp": "2026-05-12T10:00:16Z",
+    "agent_id": "Deploy-Bot-4",
+    "action": "Write_Config",
+    "resource": "Config_Store",
+    "assigned_scope": ["Read_Config", "Write_Config"],
+    "metadata": { "ip": "10.0.0.30", "session_id": "sess_004" }
+  },
+  {
+    "id": "log_010",
+    "timestamp": "2026-05-12T10:00:18Z",
+    "agent_id": "Deploy-Bot-4",
+    "action": "Exfiltrate_Data",
+    "resource": "Customer_DB",
+    "assigned_scope": ["Read_Config", "Write_Config"],
+    "metadata": { "ip": "10.0.0.30", "session_id": "sess_004" }
+  },
+  {
+    "id": "log_011",
+    "timestamp": "2026-05-12T10:00:20Z",
+    "agent_id": "Maint-Bot-2",
+    "action": "Read_Health",
+    "resource": "Server_02",
+    "assigned_scope": ["Read_Health", "Write_Health"],
+    "metadata": { "ip": "10.0.0.20", "session_id": "sess_002" }
+  },
+  {
+    "id": "log_012",
+    "timestamp": "2026-05-12T10:00:22Z",
+    "agent_id": "Patrol-Bot-1",
+    "action": "Read_Health",
+    "resource": "Server_05",
+    "assigned_scope": ["Read_Health"],
+    "metadata": { "ip": "10.0.0.10", "session_id": "sess_001" }
+  }
+]
