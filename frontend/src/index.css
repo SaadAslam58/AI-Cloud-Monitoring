@@ -13,12 +13,12 @@
   --color-border:     rgba(255, 255, 255, 0.07);
 
   /* Rich accent palette */
-  --color-accent-green:   #2dd4a7;  /* teal-400 — warmer than pure emerald */
-  --color-accent-purple:  #a78bfa;  /* violet-400 */
-  --color-accent-cyan:    #38bdf8;  /* sky-400 */
-  --color-accent-red:     #f87171;  /* red-400 */
-  --color-accent-indigo:  #818cf8;  /* indigo-400 */
-  --color-accent-amber:   #fbbf24;  /* amber-400 */
+  --color-accent-green:   #2dd4a7;
+  --color-accent-purple:  #a78bfa;
+  --color-accent-cyan:    #38bdf8;
+  --color-accent-red:     #f87171;
+  --color-accent-indigo:  #818cf8;
+  --color-accent-amber:   #fbbf24;
 }
 
 @layer base {
@@ -49,6 +49,98 @@
   -webkit-backdrop-filter: blur(24px) saturate(160%);
   background: rgba(6, 11, 24, 0.75);
   border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ── Custom Keyframe Animations ───────────────────────────────── */
+
+/* Radar sweep: rotating conic sector */
+@keyframes radar-sweep {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Expanding ring from center */
+@keyframes ring-expand {
+  0%   { transform: scale(0.85); opacity: 0.7; }
+  100% { transform: scale(2.0);  opacity: 0;   }
+}
+
+/* Dot flowing down a connector line */
+@keyframes dot-flow {
+  0%   { top: 0%;    opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { top: 100%;  opacity: 0; }
+}
+
+/* Horizontal scan bar sweeping vertically through a card */
+@keyframes scan-sweep {
+  0%   { top: -2px; opacity: 0;   }
+  5%   { opacity: 0.6; }
+  95%  { opacity: 0.4; }
+  100% { top: 100%; opacity: 0;   }
+}
+
+/* SVG waveform draw animation */
+@keyframes wave-draw {
+  0%   { stroke-dashoffset: 200; opacity: 0.2; }
+  50%  { stroke-dashoffset: 0;   opacity: 1;   }
+  100% { stroke-dashoffset: -200; opacity: 0.2; }
+}
+
+/* Shimmer left→right pass */
+@keyframes shimmer-pass {
+  0%   { transform: translateX(-150%); }
+  100% { transform: translateX(250%);  }
+}
+
+/* Subtle idle glow breathe */
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.25; }
+  50%       { opacity: 0.7;  }
+}
+
+/* Blink cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Animation Utility Classes ────────────────────────────────── */
+
+.animate-radar-sweep {
+  animation: radar-sweep 4s linear infinite;
+}
+.animate-ring-expand {
+  animation: ring-expand 2.5s ease-out infinite;
+}
+.animate-ring-expand-2 {
+  animation: ring-expand 2.5s ease-out infinite 0.8s;
+}
+.animate-ring-expand-3 {
+  animation: ring-expand 2.5s ease-out infinite 1.6s;
+}
+.animate-dot-flow {
+  animation: dot-flow 1.8s ease-in-out infinite;
+}
+.animate-dot-flow-2 {
+  animation: dot-flow 1.8s ease-in-out infinite 0.9s;
+}
+.animate-scan-sweep {
+  animation: scan-sweep 3s ease-in-out infinite;
+}
+.animate-wave-draw {
+  animation: wave-draw 3s ease-in-out infinite;
+  stroke-dasharray: 200;
+}
+.animate-shimmer {
+  animation: shimmer-pass 2.5s ease-in-out infinite;
+}
+.animate-glow-breathe {
+  animation: glow-breathe 2s ease-in-out infinite;
+}
+.animate-blink {
+  animation: blink 1s step-end infinite;
 }
 
 /* Custom scrollbar */

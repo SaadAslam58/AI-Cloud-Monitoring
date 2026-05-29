@@ -21,7 +21,8 @@ const GlowDot = ({ cx, cy, color }: { cx?: number; cy?: number; color: string })
 
 export const PulseMonitor: React.FC<PulseMonitorProps> = ({ events, status }) => {
   const maxPoints = 30;
-  const recentEvents = events.slice(-maxPoints);
+  // events[0] = newest (prepended in useLogStream). Reverse slice for chronological chart.
+  const recentEvents = events.slice(0, maxPoints).reverse();
 
   // Build dual data series: normalSignal + threatSignal per time slot
   const chartData = Array.from({ length: maxPoints }, (_, i) => {
@@ -31,17 +32,14 @@ export const PulseMonitor: React.FC<PulseMonitorProps> = ({ events, status }) =>
       const isMalicious = event.verdict.status === 'Malicious';
       return {
         time: i,
-        // Normal signal: calm oscillating baseline — drops slightly under threat
         normalSignal: isMalicious
           ? 10 + Math.random() * 5
           : 28 + Math.sin(i * 0.7) * 8 + Math.random() * 6,
-        // Threat signal: low flatline when clean, spikes aggressively on malicious
         threatSignal: isMalicious
           ? 75 + Math.random() * 22
           : 5 + Math.random() * 2,
       };
     }
-    // Padding before events arrive
     return {
       time: i,
       normalSignal: 28 + Math.sin(i * 0.7) * 8,
@@ -49,7 +47,8 @@ export const PulseMonitor: React.FC<PulseMonitorProps> = ({ events, status }) =>
     };
   });
 
-  const latestEvent = events[events.length - 1];
+  // events[0] is newest
+  const latestEvent = events[0];
   const isLatestMalicious = latestEvent?.verdict.status === 'Malicious';
 
   const activeAgentsCount = new Set(events.map(e => e.log_entry.agent_id)).size;
@@ -59,13 +58,13 @@ export const PulseMonitor: React.FC<PulseMonitorProps> = ({ events, status }) =>
       : '0.0';
 
   return (
-    <div className="glass-card p-8 h-full flex flex-col shadow-2xl">
+    <div className="glass-card p-4 sm:p-6 lg:p-8 h-full flex flex-col shadow-2xl">
       {/* Header row */}
-      <div className="flex justify-between items-start mb-8">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4 sm:mb-6 lg:mb-8">
         <div>
-          <div className="flex items-center gap-2.5 mb-2">
+          <div className="flex items-center gap-2.5 mb-1.5">
             <div
-              className="w-1.5 h-1.5 rounded-full animate-pulse"
+              className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0"
               style={{
                 backgroundColor: isLatestMalicious ? '#f87171' : '#2dd4a7',
                 boxShadow: isLatestMalicious
@@ -77,25 +76,25 @@ export const PulseMonitor: React.FC<PulseMonitorProps> = ({ events, status }) =>
               System Pulse Monitor
             </span>
           </div>
-          <h2 className="text-3xl font-display font-bold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
             {isLatestMalicious ? 'Anomaly Detected' : 'Network Integrity Stable'}
           </h2>
         </div>
 
-        {/* Stats */}
-        <div className="flex gap-8">
-          <div className="text-right">
+        {/* Stats — scrollable row on very small screens */}
+        <div className="flex gap-4 sm:gap-6 lg:gap-8 overflow-x-auto pb-1 sm:pb-0 flex-shrink-0">
+          <div className="text-right flex-shrink-0">
             <div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Agents</div>
-            <div className="text-2xl font-bold tracking-tighter text-teal-400">{activeAgentsCount}</div>
+            <div className="text-xl sm:text-2xl font-bold tracking-tighter text-teal-400">{activeAgentsCount}</div>
           </div>
-          <div className="text-right">
+          <div className="text-right flex-shrink-0">
             <div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Events</div>
-            <div className="text-2xl font-bold tracking-tighter text-white">{status?.events_processed ?? 0}</div>
+            <div className="text-xl sm:text-2xl font-bold tracking-tighter text-white">{status?.events_processed ?? 0}</div>
           </div>
-          <div className="text-right">
+          <div className="text-right flex-shrink-0">
             <div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Threat Rate</div>
             <div
-              className="text-2xl font-bold tracking-tighter"
+              className="text-xl sm:text-2xl font-bold tracking-tighter"
               style={{ color: parseFloat(anomalyPercent) > 0 ? '#f87171' : '#2dd4a7' }}
             >
               {anomalyPercent}%
@@ -117,11 +116,24 @@ export const PulseMonitor: React.FC<PulseMonitorProps> = ({ events, status }) =>
       </div>
 
       {/* Dual-line chart */}
-      <div className="flex-1 min-h-[200px] relative">
+      <div className="flex-1 min-h-[160px] sm:min-h-[200px] relative">
         {/* Ambient floor glow */}
         <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-teal-500/5 to-transparent pointer-events-none rounded-b-xl" />
         {isLatestMalicious && (
           <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-red-500/8 to-transparent pointer-events-none rounded-t-xl" />
+        )}
+
+        {/* Idle overlay — shown before any events arrive */}
+        {events.length === 0 && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10 pointer-events-none">
+            <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-400/30 to-transparent animate-scan-sweep" />
+            <div className="flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" style={{ animationDelay: '0ms' }} />
+              <div className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" style={{ animationDelay: '200ms' }} />
+              <div className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" style={{ animationDelay: '400ms' }} />
+            </div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-600">Awaiting Signal</span>
+          </div>
         )}
 
         <ResponsiveContainer width="100%" height="100%">
